@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from config import *
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -35,8 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contODrib.staticfiles',
-    'socialauth'
+    'django.contrib.staticfiles',
+    'debug_toolbar',
+
+    'socialauth',
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,7 +51,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -82,3 +88,41 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+#Added settings
+#TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),)
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates').replace('\\','/'),
+)
+
+INTERNAL_IPS = ('192.168.0.112')
+AUTH_PROFILE_MODULE = 'socialauth.UserProfile'
+AUTHENTICATION_BACKENDS = (
+  'social.backends.facebook.FacebookOAuth2',
+  'social.backends.twitter.TwitterOAuth',
+  'social.backends.google.GoogleOAuth2',
+  'django.contrib.auth.backends.ModelBackend',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    'django.core.context_processors.request',
+)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.mail.mail_validation',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'socialauth.pipeline.get_profile_picture',
+)
+
+FIELDS_STORED_IN_SESSION = ['key']

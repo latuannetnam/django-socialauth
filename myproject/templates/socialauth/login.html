@@ -9,13 +9,13 @@
     {%else%}
         <h3>Select login option:</h3>
         {% load staticfiles %}
-        <a href="{% url 'social:begin' 'facebook' %}?key=facebook">
+        <a href="{% url 'social:begin' 'facebook' %}?key={{ query_string }}">
             <img src="{% static "facebook-icon.png" %}">
         </a>
-        <a href="{% url 'social:begin' 'twitter' %}?key=twitter">
+        <a href="{% url 'social:begin' 'twitter' %}?key={{ query_string }}">
             <img src="{% static "twitter-icon.png" %}">
         </a>
-        <a href="{% url 'social:begin' 'google-oauth2' %}?key=google">
+        <a href="{% url 'social:begin' 'google-oauth2' %}?key={{ query_string }}">
             <img src="{% static "google-icon.jpg" %}">
         </a>
     {%endif%}

@@ -94,10 +94,53 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates').replace('\\','/'),
 )
 
+#--- Loggin--------
+# settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'myproject.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'INFO',
+        },
+        'myproject': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+        'socialauth': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
+
+#--------------------------Debug bar settings
 INTERNAL_IPS = ('192.168.0.112')
 AUTH_PROFILE_MODULE = 'socialauth.UserProfile'
+
+#----------------- Social auth settings
 AUTHENTICATION_BACKENDS = (
-  'social.backends.facebook.FacebookOAuth2',
+  #'social.backends.facebook.FacebookOAuth2',
+  'social.backends.facebook.Facebook2OAuth2',
   'social.backends.twitter.TwitterOAuth',
   'social.backends.google.GoogleOAuth2',
   'django.contrib.auth.backends.ModelBackend',
@@ -106,6 +149,8 @@ AUTHENTICATION_BACKENDS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     'django.core.context_processors.request',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged/'
@@ -122,7 +167,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'socialauth.pipeline.get_profile_picture',
+    'socialauth.pipeline.get_profile',
+    'social.pipeline.debug.debug',
 )
-
 FIELDS_STORED_IN_SESSION = ['key']

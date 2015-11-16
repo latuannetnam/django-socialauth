@@ -16,9 +16,9 @@ Django social authentication with Facebook, Google using python-social-auth
 
 ## INSTALLATION
 * pip install -r requirements.txt
-* cd myproject
-* python manage.py syncdb
 * cd myproject/myproject
 * cp config_sample.py config.py
+* cd ../
+* python manage.py syncdb
 * Fill-in appID/secret to SOCIAL* in config.py
 * python manage.py runserver ip:port

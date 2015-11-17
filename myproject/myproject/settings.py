@@ -135,6 +135,7 @@ LOGGING = {
 
 #--------------------------Debug bar settings
 INTERNAL_IPS = ('192.168.0.112')
+
 AUTH_PROFILE_MODULE = 'socialauth.UserProfile'
 
 #----------------- Social auth settings
